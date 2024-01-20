@@ -15,7 +15,7 @@ const {
   productFromModel,
 } = require('../mocks/productsMocks');
 
-describe('Controller layer unit tests', function () {
+describe('Products route, Controller layer unit tests', function () {
   it('Should return an object with status 200 and an array with the right products when listing all products', async function () {
     sinon.stub(productsService, 'fetchAllProducts').resolves(productsListFromService);
 

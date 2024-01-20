@@ -9,7 +9,7 @@ const {
   productFromModel,
 } = require('../mocks/productsMocks');
 
-describe('Model layer unit tests', function () {
+describe('Products route, Model layer unit tests', function () {
   it('Should return an array with the right objects when listing all products', async function () {
     sinon.stub(connection, 'execute').resolves(productsListDB);
 
