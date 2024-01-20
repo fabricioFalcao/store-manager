@@ -31,7 +31,7 @@ const productsListModel = [
   },
 ];
 
-const productDB = [
+const productFromDB = [
   [
     {
       id: 1,
@@ -41,14 +41,23 @@ const productDB = [
   [],
 ];
 
-const productModel = {
+const productFromModel = {
   id: 1,
   name: 'Martelo de Thor',
 };
 
+const productsListFromService = { status: 'SUCCESSFUL', data: productsListModel };
+
+const invalidProductFromService = { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+
+const productFromService = { status: 'SUCCESSFUL', data: productFromModel };
+
 module.exports = {
   productsListModel,
   productsListDB,
-  productDB,
-  productModel,
+  productFromDB,
+  productFromModel,
+  productsListFromService,
+  invalidProductFromService,
+  productFromService,
 };

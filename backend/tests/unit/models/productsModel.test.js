@@ -5,12 +5,12 @@ const { productsModel } = require('../../../src/models');
 const { 
   productsListDB,
   productsListModel,
-  productDB,
-  productModel,
+  productFromDB,
+  productFromModel,
 } = require('../mocks/productsMocks');
 
 describe('Model layer unit tests', function () {
-  it('Should return an array with the right objects', async function () {
+  it('Should return an array with the right objects when listing all products', async function () {
     sinon.stub(connection, 'execute').resolves(productsListDB);
 
     const productsList = await productsModel.fetchAllProducts();
@@ -20,13 +20,13 @@ describe('Model layer unit tests', function () {
     expect(productsList).to.be.deep.equal(productsListModel);
   });
 
-  it('Should return an object with the right product data', async function () {
-    sinon.stub(connection, 'execute').resolves(productDB);
+  it('Should return an object with the right product data when searching by ID', async function () {
+    sinon.stub(connection, 'execute').resolves(productFromDB);
 
     const productsList = await productsModel.fetchProduct(1);
 
     expect(productsList).to.be.an('object');
-    expect(productsList).to.be.deep.equal(productModel);
+    expect(productsList).to.be.deep.equal(productFromModel);
   });
 
   afterEach(function () {
