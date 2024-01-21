@@ -52,6 +52,20 @@ const invalidProductFromService = { status: 'NOT_FOUND', data: { message: 'Produ
 
 const productFromService = { status: 'SUCCESSFUL', data: productFromModel };
 
+const newProductIdFromDB = { insertId: 5 };
+const newProductIdFromModel = 5;
+
+const failedRegisterFromService = { 
+  status: 'SERVER_ERROR', 
+  data: { message: 'Unable to register product' }, 
+};
+
+const newProduct = {
+  id: 4,
+  name: 'ProdutoX',
+};
+const succeededRegisterFromService = { status: 'CREATED', data: newProduct };
+
 module.exports = {
   productsListModel,
   productsListDB,
@@ -60,4 +74,9 @@ module.exports = {
   productsListFromService,
   invalidProductFromService,
   productFromService,
+  newProductIdFromDB,
+  newProductIdFromModel,
+  failedRegisterFromService,
+  succeededRegisterFromService,
+  newProduct,
 };

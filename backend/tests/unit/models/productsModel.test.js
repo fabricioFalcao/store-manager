@@ -7,6 +7,8 @@ const {
   productsListModel,
   productFromDB,
   productFromModel,
+  newProductIdFromDB,
+  newProductIdFromModel,
 } = require('../mocks/productsMocks');
 
 describe('Products route, Model layer unit tests', function () {
@@ -27,6 +29,14 @@ describe('Products route, Model layer unit tests', function () {
 
     expect(productsList).to.be.an('object');
     expect(productsList).to.be.deep.equal(productFromModel);
+  });
+
+  it('Should return the new product ID when succssesful registering a new product', async function () {
+    sinon.stub(connection, 'execute').resolves([newProductIdFromDB]);
+
+    const insertId = await productsModel.registerProduct({ name: 'ProdutoX' });
+
+    expect(insertId).to.equal(newProductIdFromModel);
   });
 
   afterEach(function () {

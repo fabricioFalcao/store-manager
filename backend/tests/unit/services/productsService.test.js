@@ -8,6 +8,8 @@ const {
   productsListFromService,
   invalidProductFromService,
   productFromService,
+  failedRegisterFromService,
+  succeededRegisterFromService,
 } = require('../mocks/productsMocks');
 
 describe('Products route, Service layer unit tests', function () {
@@ -33,6 +35,23 @@ describe('Products route, Service layer unit tests', function () {
     const product = await productsService.fetchProduct(1);
 
     expect(product).to.be.deep.equal(productFromService);
+  });
+
+  it('Should return an object with status 500 and the right message when failing to register a new product', async function () {
+    sinon.stub(productsModel, 'registerProduct').resolves(undefined);
+
+    const newProduct = await productsService.registerProduct({ name: 'ProdutoX' });
+
+    expect(newProduct).to.be.deep.equal(failedRegisterFromService);
+  });
+
+  it('Should return an object with status 201 and the new product data for a successful registration', async function () {
+    sinon.stub(productsModel, 'registerProduct').resolves(5);
+    sinon.stub(productsModel, 'fetchProduct').resolves({ id: 4, name: 'ProdutoX' });
+
+    const newProduct = await productsService.registerProduct({ name: 'ProdutoX' });
+
+    expect(newProduct).to.be.deep.equal(succeededRegisterFromService);
   });
 
   afterEach(function () {

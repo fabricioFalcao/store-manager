@@ -13,6 +13,9 @@ const {
   productFromService,
   productsListModel,
   productFromModel,
+  failedRegisterFromService,
+  succeededRegisterFromService,
+  newProduct,
 } = require('../mocks/productsMocks');
 
 describe('Products route, Controller layer unit tests', function () {
@@ -59,6 +62,36 @@ describe('Products route, Controller layer unit tests', function () {
 
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(productFromModel);
+  });
+
+  it('Should return an object with status 500 and the right message when failing to register a new product', async function () {
+    sinon.stub(productsService, 'registerProduct').resolves(failedRegisterFromService);
+
+    const req = { params: { }, body: { name: 'ProdutoX' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.registerProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(500);
+    expect(res.json).to.have.been.calledWith({ message: 'Unable to register product' });
+  });
+
+  it('Should return an object with status 201 and the new product data for a successful registration', async function () {
+    sinon.stub(productsService, 'registerProduct').resolves(succeededRegisterFromService);
+
+    const req = { params: { }, body: { name: 'ProdutoX' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.registerProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(newProduct);
   });
 
   afterEach(function () {
