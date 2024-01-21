@@ -12,7 +12,14 @@ const fetchProduct = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const registerProduct = async (req, res) => {
+  const productData = req.body;
+  const { status, data } = await productsService.registerProduct(productData);
+  return res.status(mapStatusHTTP(status)).json(data);
+};
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,
+  registerProduct,
 };

@@ -16,11 +16,17 @@ const fetchProduct = async (productId) => {
   return { status: 'SUCCESSFUL', data: product };
 };
 
-// const registerProduct = async (productData) => {
-  
-// };
+const registerProduct = async (productData) => {
+  const newProductId = await productsModel.registerProduct(productData);
+  if (!newProductId) {
+    return { status: 'SERVER_ERROR', data: { message: 'Unable to register product' } };
+  }
+  const newProduct = await productsModel.fetchProduct(newProductId);
+  return { status: 'CREATED', data: newProduct };
+};
 
 module.exports = {
   fetchAllProducts,
   fetchProduct,
+  registerProduct,
 };
