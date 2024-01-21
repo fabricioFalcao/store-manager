@@ -16,16 +16,17 @@ describe('Sales route, Model layer unit tests', function () {
     const salesList = await salesModel.fetchAllSales();
 
     expect(salesList).to.be.an('array');
-    expect(salesList).to.have.lengthOf(2);
+    expect(salesList).to.have.lengthOf(3);
     expect(salesList).to.be.deep.equal(salesListModel);
   });
 
-  it('Should return an object with the right sale data when searching by ID', async function () {
+  it('Should return an array with the right sale data when searching by ID', async function () {
     sinon.stub(connection, 'execute').resolves(saleFromDB);
 
     const salesList = await salesModel.fetchSale(1);
 
-    expect(salesList).to.be.an('object');
+    expect(salesList).to.be.an('array');
+    expect(salesList).to.have.lengthOf(2);
     expect(salesList).to.be.deep.equal(saleFromModel);
   });
 

@@ -10,7 +10,7 @@ const fetchAllSales = async () => {
 
 const fetchSale = async (saleId) => {
   const sale = await salesModel.fetchSale(saleId);
-  if (!sale) {
+  if (!sale || sale.length === 0) {
     return { status: 'NOT_FOUND', data: { message: 'Sale not found' } };
   }
   return { status: 'SUCCESSFUL', data: sale };

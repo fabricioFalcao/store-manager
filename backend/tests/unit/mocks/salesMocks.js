@@ -1,26 +1,59 @@
 const sale1 = {
-  id: 1,
-  date: '2024-01-19T20:08:58.000Z',
+  saleId: 1,
+  date: '2024-01-21T00:59:54.000Z',
+  productId: 1,
+  quantity: 5,
 };
 
 const sale2 = {
-  id: 2,
-  date: '2024-01-19T20:08:58.000Z',
+  saleId: 1,
+  date: '2024-01-21T00:59:54.000Z',
+  productId: 2,
+  quantity: 10,
+};
+
+const sale3 = {
+  saleId: 2,
+  date: '2024-01-21T00:59:54.000Z',
+  productId: 3,
+  quantity: 15,
 };
 
 const salesListDB = [
-  [sale1, sale2],
+  [sale1, sale2, sale3],
   [],
 ];
 
-const salesListModel = [sale1, sale2];
+const salesListModel = [sale1, sale2, sale3];
 
 const saleFromDB = [
-  [sale1],
+  [
+    {
+      date: '2024-01-21T01:34:44.000Z',
+      productId: 1,
+      quantity: 5,
+    },
+    {
+      date: '2024-01-21T01:34:44.000Z',
+      productId: 2,
+      quantity: 10,
+    },
+  ],
   [],
 ];
 
-const saleFromModel = sale1;
+const saleFromModel = [
+  {
+    date: '2024-01-21T01:34:44.000Z',
+    productId: 1,
+    quantity: 5,
+  },
+  {
+    date: '2024-01-21T01:34:44.000Z',
+    productId: 2,
+    quantity: 10,
+  },
+];
 
 const salesListFromService = { status: 'SUCCESSFUL', data: salesListModel };
 

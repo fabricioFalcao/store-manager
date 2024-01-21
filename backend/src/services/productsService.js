@@ -16,6 +16,10 @@ const fetchProduct = async (productId) => {
   return { status: 'SUCCESSFUL', data: product };
 };
 
+// const registerProduct = async (productData) => {
+  
+// };
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,

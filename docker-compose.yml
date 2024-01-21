@@ -26,7 +26,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: StoreManager
     ports:
-      - 33066:3306
+      - 3306:3306
     healthcheck:
       # Deve aguardar o banco ficar operacional
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
