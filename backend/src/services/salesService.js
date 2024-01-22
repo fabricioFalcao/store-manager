@@ -1,4 +1,5 @@
 const { salesModel } = require('../models');
+const { checkCart } = require('./validations');
 
 const fetchAllSales = async () => {
   const salesList = await salesModel.fetchAllSales();
@@ -17,6 +18,9 @@ const fetchSale = async (saleId) => {
 };
 
 const registerSale = async (saleData) => {
+  const availableProducts = await checkCart(saleData);
+  if (!availableProducts) return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+
   const id = await salesModel.registerSale(saleData);
   const sale = await salesModel.fetchSale(id);
   if (!id || !sale || sale.length === 0) {
