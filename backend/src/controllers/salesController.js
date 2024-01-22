@@ -12,7 +12,14 @@ const fetchSale = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const registerSale = async (req, res) => {
+  const saleData = req.body;
+  const { status, data } = await salesService.registerSale(saleData);
+  return res.status(mapStatusHTTP(status)).json(data);
+};
+
 module.exports = {
   fetchAllSales,
   fetchSale,
+  registerSale,
 };

@@ -16,7 +16,21 @@ const fetchSale = async (saleId) => {
   return { status: 'SUCCESSFUL', data: sale };
 };
 
+const registerSale = async (saleData) => {
+  const id = await salesModel.registerSale(saleData);
+  const sale = await salesModel.fetchSale(id);
+  if (!id || !sale || sale.length === 0) {
+    return { status: 'SERVER_ERROR', data: { message: 'Unable to register sale' } };
+  }
+  const itemsSold = sale.map((item) => {
+    const { date, ...newObj } = item;
+    return newObj;
+  });
+  return { status: 'CREATED', data: { id, itemsSold } };
+};
+
 module.exports = {
   fetchAllSales,
   fetchSale,
+  registerSale,
 };
