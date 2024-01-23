@@ -67,8 +67,22 @@ const registerSale = async (saleData) => {
   }
 };
 
+const deleteSale = async (saleId) => {
+  try {
+    const [{ affectedRows }] = await connection.execute(
+      'DELETE FROM sales WHERE id = ?', 
+      [saleId],
+    );
+    return affectedRows === 1;
+  } catch (error) {
+    console.error('Error fetching sales:', error);
+    throw error; 
+  }
+};
+
 module.exports = {
   fetchAllSales,
   fetchSale,
   registerSale,
+  deleteSale,
 };

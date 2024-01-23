@@ -54,6 +54,63 @@ describe('Products route, Service layer unit tests', function () {
     expect(newProduct).to.be.deep.equal(succeededRegisterFromService);
   });
 
+  it('Should return an object with status NOT_FOUND and the right message when updating and inexistent product', async function () {
+    sinon.stub(productsModel, 'fetchProduct').resolves(undefined);
+
+    const updatedProduct = await productsService.updateProduct(0, { name: 'Manopla do Infinito' });
+
+    expect(updatedProduct).to.be.deep.equal(invalidProductFromService);
+  });
+
+  it('Should return an object with status SERVER_ERROR and the right message when failing to update a product', async function () {
+    sinon.stub(productsModel, 'fetchProduct').resolves({ id: 1, name: 'Mjolnir' });
+    sinon.stub(productsModel, 'updateProduct').resolves(false);
+
+    const updatedProduct = await productsService.updateProduct(1, { name: 'Olho de Agamoto' });
+
+    expect(updatedProduct).to.be.deep.equal({ status: 'SERVER_ERROR', data: { message: 'Unable to update product' } });
+  });
+
+  it('Should return an object with status SUCCESSFUL and the right message when succeeding to update a product', async function () {
+    sinon.stub(productsModel, 'fetchProduct')
+      .onFirstCall()
+      .resolves({ id: 1, name: 'Mjolnir' })
+      .onSecondCall()
+      .resolves({ id: 1, name: 'Martelo do Batman' });
+      
+    sinon.stub(productsModel, 'updateProduct').resolves(true);
+
+    const updatedProduct = await productsService.updateProduct(1, { name: 'Martelo do Batman' });
+
+    expect(updatedProduct).to.be.deep.equal({ status: 'SUCCESSFUL', data: { id: 1, name: 'Martelo do Batman' } });
+  });
+
+  it('Should return an object with status NOT_FOUND and the right message when deleting and inexistent product', async function () {
+    sinon.stub(productsModel, 'fetchProduct').resolves(undefined);
+
+    const deletedProduct = await productsService.deleteProduct(0);
+
+    expect(deletedProduct).to.be.deep.equal(invalidProductFromService);
+  });
+
+  it('Should return an object with status SERVER_ERROR and the right message when failing to delete a product', async function () {
+    sinon.stub(productsModel, 'fetchProduct').resolves({ id: 1, name: 'Mjolnir' });
+    sinon.stub(productsModel, 'deleteProduct').resolves(false);
+
+    const deletedProduct = await productsService.deleteProduct(1);
+
+    expect(deletedProduct).to.be.deep.equal({ status: 'SERVER_ERROR', data: { message: 'Unable to delete product' } });
+  });
+
+  it('Should return an object with status SUCCESSFUL and the right message when succeeding to delete a product', async function () {
+    sinon.stub(productsModel, 'fetchProduct').resolves({ id: 1, name: 'Mjolnir' });
+    sinon.stub(productsModel, 'deleteProduct').resolves(true);
+
+    const deletedProduct = await productsService.deleteProduct(1);
+
+    expect(deletedProduct).to.be.deep.equal({ status: 'NO_CONTENT' });
+  });
+
   afterEach(function () {
     sinon.restore();
   });

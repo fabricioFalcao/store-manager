@@ -94,6 +94,95 @@ describe('Products route, Controller layer unit tests', function () {
     expect(res.json).to.have.been.calledWith(newProduct);
   });
 
+  it('Should return an object with status 404 and the right message when updating and inexistent product', async function () {
+    sinon.stub(productsService, 'updateProduct').resolves(invalidProductFromService);
+
+    const req = { params: { id: 0 }, body: { name: 'Mjolnir' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+  });
+
+  it('Should return an object with status 500 and the right message when failing to update a product', async function () {
+    sinon.stub(productsService, 'updateProduct').resolves({ status: 'SERVER_ERROR', data: { message: 'Unable to update product' } });
+
+    const req = { params: { id: 1 }, body: { name: 'Mjolnir' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(500);
+    expect(res.json).to.have.been.calledWith({ message: 'Unable to update product' });
+  });
+
+  it('Should return an object with status 200 and the right message when succeeding to update a product', async function () {
+    sinon.stub(productsService, 'updateProduct').resolves({ status: 'SUCCESSFUL', data: { id: 1, name: 'Martelo do Batman' } });
+
+    const req = { params: { id: 1 }, body: { name: 'Martelo do Batman' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith({ id: 1, name: 'Martelo do Batman' });
+  });
+
+  it('Should return an object with status 404 and the right message when deleting and inexistent product', async function () {
+    sinon.stub(productsService, 'deleteProduct').resolves(invalidProductFromService);
+
+    const req = { params: { id: 0 }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.deleteProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+  });
+
+  it('Should return an object with status 500 and the right message when failing to delete a product', async function () {
+    sinon.stub(productsService, 'deleteProduct').resolves({ status: 'SERVER_ERROR', data: { message: 'Unable to delete product' } });
+
+    const req = { params: { id: 1 }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.deleteProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(500);
+    expect(res.json).to.have.been.calledWith({ message: 'Unable to delete product' });
+  });
+
+  it('Should return an object with status 204 and the right message when succeeding to delete a product', async function () {
+    sinon.stub(productsService, 'deleteProduct').resolves({ status: 'NO_CONTENT' });
+
+    const req = { params: { id: 1 }, body: { } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.deleteProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(204);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

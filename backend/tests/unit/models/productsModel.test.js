@@ -39,6 +39,22 @@ describe('Products route, Model layer unit tests', function () {
     expect(insertId).to.equal(newProductIdFromModel);
   });
 
+  it('Should return true when updating a product', async function () {
+    sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+
+    const updatedProduct = await productsModel.updateProduct(3, { name: 'Martelo do Batman' });
+
+    expect(updatedProduct).to.equal(true);
+  });
+
+  it('Should return true when deleting a product', async function () {
+    sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+
+    const deletedProduct = await productsModel.deleteProduct(3);
+
+    expect(deletedProduct).to.equal(true);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

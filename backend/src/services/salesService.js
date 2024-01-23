@@ -33,8 +33,21 @@ const registerSale = async (saleData) => {
   return { status: 'CREATED', data: { id, itemsSold } };
 };
 
+const deleteSale = async (saleId) => {
+  const [sale] = await salesModel.fetchSale(saleId);
+  if (!sale) { return { status: 'NOT_FOUND', data: { message: 'Sale not found' } }; }
+
+  const deleteCheck = await salesModel.deleteSale(saleId);
+  if (!deleteCheck) {
+    return { status: 'SERVER_ERROR', data: { message: 'Unable to delete sale' } };
+  }
+
+  return { status: 'NO_CONTENT' };
+};
+
 module.exports = {
   fetchAllSales,
   fetchSale,
   registerSale,
+  deleteSale,
 };

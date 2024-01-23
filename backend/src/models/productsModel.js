@@ -67,7 +67,7 @@ const deleteProduct = async (productId) => {
     );
     return affectedRows === 1;
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error deleting products:', error);
     throw error; 
   }
 };

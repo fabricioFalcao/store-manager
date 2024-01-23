@@ -18,8 +18,15 @@ const registerSale = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const deleteSale = async (req, res) => {
+  const { id: saleId } = req.params;
+  const { status, data } = await salesService.deleteSale(saleId);
+  return res.status(mapStatusHTTP(status)).json(data);
+};
+
 module.exports = {
   fetchAllSales,
   fetchSale,
   registerSale,
+  deleteSale,
 };
