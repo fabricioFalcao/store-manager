@@ -1,7 +1,7 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const { validateNewProduct } = require('../../../src/middlewares/productsValidations');
+const { validateProduct } = require('../../../src/middlewares/productsValidations');
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -16,7 +16,7 @@ describe('productsValidation Middleware test', function () {
       json: sinon.stub(),
     };
 
-    validateNewProduct(req, res, next); 
+    validateProduct(req, res, next); 
 
     expect(next).to.have.been.calledWith();
   }); 
@@ -30,7 +30,7 @@ describe('productsValidation Middleware test', function () {
       json: sinon.stub(),
     };
 
-    validateNewProduct(req, res, next); 
+    validateProduct(req, res, next); 
 
     expect(res.status).to.have.been.calledWith(400);
     expect(res.json).to.have.been.calledWith({ message: '"name" is required' });
@@ -45,7 +45,7 @@ describe('productsValidation Middleware test', function () {
       json: sinon.stub(),
     };
 
-    validateNewProduct(req, res, next); 
+    validateProduct(req, res, next); 
 
     expect(res.status).to.have.been.calledWith(422);
     expect(res.json).to.have.been.calledWith({ message: '"name" must be a string' });
@@ -60,7 +60,7 @@ describe('productsValidation Middleware test', function () {
       json: sinon.stub(),
     };
 
-    validateNewProduct(req, res, next); 
+    validateProduct(req, res, next); 
 
     expect(res.status).to.have.been.calledWith(422);
     expect(res.json).to.have.been.calledWith({ message: '"name" length must be at least 5 characters long' });

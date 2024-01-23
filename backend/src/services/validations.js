@@ -9,4 +9,5 @@ const checkCart = async (saleData) => {
 
 module.exports = {
   checkCart,
+
 };

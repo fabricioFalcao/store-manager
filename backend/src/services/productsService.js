@@ -18,6 +18,7 @@ const fetchProduct = async (productId) => {
 
 const registerProduct = async (productData) => {
   const newProductId = await productsModel.registerProduct(productData);
+
   if (!newProductId) {
     return { status: 'SERVER_ERROR', data: { message: 'Unable to register product' } };
   }
@@ -25,8 +26,21 @@ const registerProduct = async (productData) => {
   return { status: 'CREATED', data: newProduct };
 };
 
+const updateProduct = async (productId, updateData) => {
+  const product = await productsModel.fetchProduct(productId);
+  if (!product) { return { status: 'NOT_FOUND', data: { message: 'Product not found' } }; }
+
+  const updateCheck = await productsModel.updateProduct(productId, updateData);
+  if (!updateCheck) {
+    return { status: 'SERVER_ERROR', data: { message: 'Unable to update product' } };
+  }
+  const updatedProduct = await productsModel.fetchProduct(productId);
+  return { status: 'SUCCESSFUL', data: updatedProduct };
+};
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,
   registerProduct,
+  updateProduct,
 };

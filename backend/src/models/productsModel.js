@@ -4,6 +4,7 @@ const connection = require('./connection');
 const {
   getFormattedColumnNames,
   getFormattedPlaceholders,
+  getFormattedUpdateColumns,
 } = require('../utils/generateFormattedQuery');
 
 // Fetch every product from the products table or throw an error if it isn`t possible.
@@ -44,8 +45,23 @@ const registerProduct = async (productData) => {
   }
 };
 
+const updateProduct = async (productId, updateData) => {
+  try {
+    const columns = getFormattedUpdateColumns(updateData);
+    const query = `UPDATE products SET ${columns} WHERE id = ?;`;
+  
+    const [{ affectedRows }] = await connection
+      .execute(query, [...Object.values(updateData), productId]);
+    return affectedRows === 1;
+  } catch (error) {
+    console.error('Error updating product:', error);
+    throw error; 
+  }
+};
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,
   registerProduct,
+  updateProduct,
 };
