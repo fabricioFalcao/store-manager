@@ -47,10 +47,19 @@ const deleteProduct = async (productId) => {
   return affectedRows === 1;
 };
 
+const searchProduct = async (term) => {
+  const [product] = await connection.execute(
+    'SELECT * FROM products WHERE name LIKE ?',
+    [`%${term}%`],
+  );
+  return camelize(product);
+};
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,
   registerProduct,
   updateProduct,
   deleteProduct,
+  searchProduct,
 };

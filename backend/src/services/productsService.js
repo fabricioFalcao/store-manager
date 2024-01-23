@@ -50,10 +50,17 @@ const deleteProduct = async (productId) => {
   return { status: 'NO_CONTENT' };
 };
 
+const searchProduct = async (term) => {
+  const product = await productsModel.searchProduct(term);
+ 
+  return { status: 'SUCCESSFUL', data: product };
+};
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,
   registerProduct,
   updateProduct,
   deleteProduct,
+  searchProduct,
 };
