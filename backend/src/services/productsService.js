@@ -38,9 +38,22 @@ const updateProduct = async (productId, updateData) => {
   return { status: 'SUCCESSFUL', data: updatedProduct };
 };
 
+const deleteProduct = async (productId) => {
+  const product = await productsModel.fetchProduct(productId);
+  if (!product) { return { status: 'NOT_FOUND', data: { message: 'Product not found' } }; }
+
+  const deleteCheck = await productsModel.deleteProduct(productId);
+  if (!deleteCheck) {
+    return { status: 'SERVER_ERROR', data: { message: 'Unable to delete product' } };
+  }
+
+  return { status: 'NO_CONTENT' };
+};
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,
   registerProduct,
   updateProduct,
+  deleteProduct,
 };

@@ -59,9 +59,23 @@ const updateProduct = async (productId, updateData) => {
   }
 };
 
+const deleteProduct = async (productId) => {
+  try {
+    const [{ affectedRows }] = await connection.execute(
+      'DELETE FROM products WHERE id = ?', 
+      [productId],
+    );
+    return affectedRows === 1;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error; 
+  }
+};
+
 module.exports = {
   fetchAllProducts,
   fetchProduct,
   registerProduct,
   updateProduct,
+  deleteProduct,
 };
