@@ -7,6 +7,7 @@ const {
   salesListModel,
   saleFromDB,
   saleFromModel,
+  newSaleReq,
 } = require('../mocks/salesMocks');
 
 describe('Sales route, Model layer unit tests', function () {
@@ -28,6 +29,14 @@ describe('Sales route, Model layer unit tests', function () {
     expect(salesList).to.be.an('array');
     expect(salesList).to.have.lengthOf(2);
     expect(salesList).to.be.deep.equal(saleFromModel);
+  });
+
+  it('Should return the new sale data when successfully registering a new sale', async function () {
+    sinon.stub(connection, 'execute').resolves([{ insertId: 5 }]);
+
+    const insertId = await salesModel.registerSale(newSaleReq);
+
+    expect(insertId).to.equal(5);
   });
 
   afterEach(function () {

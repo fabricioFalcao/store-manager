@@ -61,6 +61,17 @@ const invalidSaleFromService = { status: 'NOT_FOUND', data: { message: 'Sale not
 
 const saleFromService = { status: 'SUCCESSFUL', data: saleFromModel };
 
+const newSaleReq = [
+  {
+    productId: 1,
+    quantity: 1,
+  },
+  {
+    productId: 2,
+    quantity: 5,
+  },
+];
+
 module.exports = {
   salesListModel,
   salesListDB,
@@ -69,4 +80,6 @@ module.exports = {
   salesListFromService,
   invalidSaleFromService,
   saleFromService,
+  newSaleReq,
+  
 };

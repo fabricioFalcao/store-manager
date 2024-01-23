@@ -61,6 +61,74 @@ describe('Sales route, Controller layer unit tests', function () {
     expect(res.json).to.have.been.calledWith(saleFromModel);
   });
 
+  it('Should return an object with status 404 and the right message when attempting to register a new sale with invalid product', async function () {
+    sinon.stub(salesService, 'registerSale').resolves({ status: 'NOT_FOUND', data: { message: 'Product not found' } });
+
+    const req = { params: { }, body: [{ productId: 14, quantity: 1 }, { productId: 2, quantity: 5 }] };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.registerSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+  });
+
+  it('Should return an object with status 500 and the right message when failing to register a new sale', async function () {
+    sinon.stub(salesService, 'registerSale').resolves({ status: 'SERVER_ERROR', data: { message: 'Unable to register sale' } });
+
+    const req = { params: { }, body: [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 5 }] };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.registerSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(500);
+    expect(res.json).to.have.been.calledWith({ message: 'Unable to register sale' });
+  });
+
+  it('Should return an object with status 201 and the new sale data for a successful registration', async function () {
+    sinon.stub(salesService, 'registerSale').resolves({ status: 'CREATED',
+      data: { id: 14,
+        itemsSold: [
+          {
+            productId: 1,
+            quantity: 1,
+          },
+          {
+            productId: 2,
+            quantity: 5,
+          },
+        ],
+      } });
+
+    const req = { params: { }, body: [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 5 }] };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+  
+    await salesController.registerSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith({ id: 14,
+      itemsSold: [
+        {
+          productId: 1,
+          quantity: 1,
+        },
+        {
+          productId: 2,
+          quantity: 5,
+        },
+      ],
+    });
+  });
+
   afterEach(function () {
     sinon.restore();
   });
