@@ -112,6 +112,24 @@ describe('Sales route, Service layer unit tests', function () {
       } });
   });
 
+  it('Should return an object with status 500 and the right message when failing to delete a sale', async function () {
+    sinon.stub(salesModel, 'fetchSale').resolves(saleFromModel);
+    sinon.stub(salesModel, 'deleteSale').resolves(false);
+
+    const deletionResult = await salesService.deleteSale(1);
+
+    expect(deletionResult).to.be.deep.equal({ status: 'SERVER_ERROR', data: { message: 'Unable to delete sale' } });
+  });
+
+  it('Should return an object with status 204 for a successful sale deletion', async function () {
+    sinon.stub(salesModel, 'fetchSale').resolves(saleFromModel);
+    sinon.stub(salesModel, 'deleteSale').resolves(true);
+
+    const deletionResult = await salesService.deleteSale(1);
+
+    expect(deletionResult).to.be.deep.equal({ status: 'NO_CONTENT' });
+  });
+
   afterEach(function () {
     sinon.restore();
   });

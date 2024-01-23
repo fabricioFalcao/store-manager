@@ -45,9 +45,27 @@ const deleteSale = async (saleId) => {
   return { status: 'NO_CONTENT' };
 };
 
+const updateSale = async (saleId, productId, quantity) => {
+  const [sale] = await salesModel.fetchSale(saleId);
+  if (!sale) { return { status: 'NOT_FOUND', data: { message: 'Sale not found' } }; }
+
+  const [saleProduct] = await salesModel.fetchSaleProduct(saleId, productId);
+  if (!saleProduct) { 
+    return { status: 'NOT_FOUND', data: { message: 'Product not found in sale' } }; 
+  }
+
+  const updateCheck = await salesModel.updateSale(saleId, productId, quantity);
+  if (!updateCheck) { 
+    return { status: 'SERVER_ERROR', data: { message: 'Unable to update sale' } };
+  }
+  const [updatedSale] = await salesModel.fetchSaleProduct(saleId, productId);
+  return { status: 'SUCCESSFUL', data: updatedSale };
+};
+
 module.exports = {
   fetchAllSales,
   fetchSale,
   registerSale,
   deleteSale,
+  updateSale,
 };

@@ -55,6 +55,45 @@ describe('Products route, Model layer unit tests', function () {
     expect(deletedProduct).to.equal(true);
   });
 
+  it('Should return null when searching for a non-existent product by ID', async function () {
+    sinon.stub(connection, 'execute').resolves([[]]);
+  
+    const nonExistentProduct = await productsModel.fetchProduct(999);
+  
+    expect(nonExistentProduct).to.equal(undefined);
+  });
+
+  it('Should handle errors when fetching all products', async function () {
+    sinon.stub(connection, 'execute').rejects(new Error('Simulated error'));
+  
+    try {
+      // The asynchronous operation that should throw an error
+      await productsModel.fetchAllProducts();
+      
+      // If the operation didn't throw an error, fail the test
+      throw new Error('Expected an error, but none was thrown');
+    } catch (error) {
+      // Check that the error message matches the expected error message
+      expect(error.message).to.equal('Simulated error');
+    }
+  });
+
+  it('Should return false when updating a non-existent product', async function () {
+    sinon.stub(connection, 'execute').resolves([{ affectedRows: 0 }]);
+  
+    const updatedProduct = await productsModel.updateProduct(999, { name: 'Updated Product' });
+  
+    expect(updatedProduct).to.equal(false);
+  });
+  
+  it('Should return false when deleting a non-existent product', async function () {
+    sinon.stub(connection, 'execute').resolves([{ affectedRows: 0 }]);
+  
+    const deletedProduct = await productsModel.deleteProduct(999);
+  
+    expect(deletedProduct).to.equal(false);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

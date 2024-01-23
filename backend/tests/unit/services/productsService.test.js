@@ -111,6 +111,20 @@ describe('Products route, Service layer unit tests', function () {
     expect(deletedProduct).to.be.deep.equal({ status: 'NO_CONTENT' });
   });
 
+  // productsService.test.js
+  it('Should handle the case when productsList is falsy', async function () {
+  // Stubbing productsModel.fetchAllProducts to return falsy value
+    sinon.stub(productsModel, 'fetchAllProducts').resolves(null);
+
+    const result = await productsService.fetchAllProducts();
+
+    // Add assertions based on the expected behavior when productsList is falsy
+    expect(result).to.deep.equal({ status: 'NOT_FOUND', data: { message: 'Unable to retrieve products' } });
+
+    // Restore the stub after the test
+    sinon.restore();
+  });
+
   afterEach(function () {
     sinon.restore();
   });

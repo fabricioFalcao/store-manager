@@ -1,5 +1,5 @@
 const mapFieldValidation = require('../utils/mapFieldValidation');
-const { saleItemSchema } = require('./validations/schemas');
+const { saleItemSchema, updateSaleSchema } = require('./validations/schemas');
 
 const validateNewSale = (req, res, next) => {
   const saleData = req.body;
@@ -11,6 +11,16 @@ const validateNewSale = (req, res, next) => {
   next();
 };
 
+const validateUpdateSale = (req, res, next) => {
+  const quantity = req.body;
+
+  const { error } = updateSaleSchema.validate(quantity);
+  if (error) return res.status(mapFieldValidation(error)).json({ message: error.message });
+
+  next();
+};
+
 module.exports = {
   validateNewSale,
+  validateUpdateSale,
 };
