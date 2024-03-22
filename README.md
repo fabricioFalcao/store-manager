@@ -1,10 +1,20 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+### Sales Management API
+
+🧑‍💻 **What was developed**
+
+In the Sales Management API project, the following tasks were completed:
+
+- Developed a RESTful API using layered architecture.
+- Implemented CRUD operations for products and sales.
+- Utilized MySQL database for data management.
+- Created validations for incoming data to the API.
+- Wrote tests to ensure the implementation of endpoints.
+
+⚙️ **Main Technologies and Tools**
+
+- Node.js
+- Express.js
+- MySQL
+- Mocha
+- Chai
+- Docker
